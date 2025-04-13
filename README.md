@@ -96,3 +96,6 @@ Os plugins configurados no `pom.xml` incluem:
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+
+## Membros
+- **Victor Hugo Pereira de Melo**
