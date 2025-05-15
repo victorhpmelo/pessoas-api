@@ -3,44 +3,41 @@ package br.embarquedigital.universidadesapi.controllers;
 import br.embarquedigital.universidadesapi.DTOs.PersonDTO;
 import br.embarquedigital.universidadesapi.entities.Person;
 import br.embarquedigital.universidadesapi.repositories.PersonRepository;
+import br.embarquedigital.universidadesapi.services.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("person")
 @RequiredArgsConstructor
 public class PersonController {
 
-    private final PersonRepository repository;
+    private final PersonService service;
 
-    private PersonDTO toDTO(Person person) {
-        PersonDTO dto = new PersonDTO();
-
-        dto.setNome(person.getNome());
-        dto.setCpf(person.getCpf());
-        dto.setIdade(person.getIdade());
-
-        return dto;
+    @GetMapping
+    public List<Person> findAll() {
+        return service.list();
     }
 
-    private Person toPerson(PersonDTO personDTO) {
-        Person person = new Person();
-
-            person.setNome(personDTO.getNome());
-            person.setCpf(personDTO.getCpf());
-            person.setIdade(personDTO.getIdade());
-
-            return person;
-    }
     @GetMapping("{id}")
     public Person findById(@PathVariable Long id) {
-        var person = repository.findById(id).orElse(null);
-        return person;
+        return service.findOne(id);
     }
 
     @PostMapping
     public Person save(@RequestBody PersonDTO personDto) {
-       var person = toPerson(personDto);
-       return repository.save(person);
+        return service.create(personDto);
+    }
+
+    @PutMapping("{id}")
+    public Person update(@PathVariable Long id, @RequestBody PersonDTO personDto) {
+        return service.modify(id, personDto);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id) {
+        service.remove(id);
     }
 }
