@@ -15,17 +15,21 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService service;
-
+    private final PersonRepository repository;
     @GetMapping
     public List<Person> findAll() {
         return service.list();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     public Person findById(@PathVariable Long id) {
         return service.findOne(id);
     }
 
+    @GetMapping("search")
+    public Person findByNomeEIdade(@RequestParam String nome, @RequestParam Long idade) {
+        return repository.findByNomeContainsAndIdadeGreaterThan(nome, idade);
+    }
     @PostMapping
     public Person save(@RequestBody PersonDTO personDto) {
         return service.create(personDto);
